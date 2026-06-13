@@ -1,8 +1,8 @@
 name: spec-driven
 version: 1
 description: >
-  OpenSpec для finAn — proposal → specs → design → tasks (per stack) → test cases.
-  Apply по стеку backend|frontend|design. Монорепозиторий Go + React.
+  OpenSpec для finAns — proposal → specs → design → tasks (per stack) → test cases.
+  Apply по стеку backend|frontend. Multi-repo: finAns-platform + workspace clones.
 artifacts:
   - id: proposal
     generates: proposal.md
@@ -90,21 +90,6 @@ artifacts:
       - specs
       - design
 
-  - id: tasks-design
-    generates: tasks_design.md
-    description: Design checklist (screens, components, flows, assets)
-    template: tasks_design.md
-    instruction: |
-      Create tasks_design.md — design only (экраны, компоненты, flow, ассеты).
-
-      Структура файла (следуй шаблону строго):
-      1. **Описание изменений** — что меняется для пользователя.
-      2. **Текущий флоу** — шаги СЕЙЧАС (или «Отсутствует»).
-      3. **Новый флоу** — шаги ПОСЛЕ изменения.
-      4. **Задачи** — чеклист `- [ ] N.M` ≤2 часа; после ## heading: `<!-- spec: capability-id -->`.
-    requires:
-      - specs
-
   - id: test-cases
     generates: test_case.md
     description: QA test cases derived from spec scenarios
@@ -124,7 +109,6 @@ apply:
   requires:
     - tasks-backend
     - tasks-frontend
-    - tasks-design
   tracks: null
   instruction: |
     SPEC-DRIVEN APPLY — agent runs all shell; user does NOT use terminal.
@@ -134,7 +118,7 @@ apply:
     - `make verify` — workspace clones present.
     - Artifacts complete for selected stack.
 
-    1. **Stack** — ask or infer: `backend` | `frontend` | `design`.
+    1. **Stack** — ask or infer: `backend` | `frontend`.
 
     2. **Branches `features/<change-name>`** (agent runs in platform repo + each touched `workspace/<service>/`):
        `git fetch && git checkout -B features/<change-name>`

@@ -20,7 +20,7 @@ Prepare **spec-review** for an OpenSpec change. **Agent runs all git/openspec co
    ```bash
    openspec status --change "<name>" --json
    ```
-   Required: proposal.md, specs/, design.md, tasks_backend.md, tasks_frontend.md, tasks_design.md, test_case.md.
+   Required: proposal.md, specs/, design.md, tasks_backend.md, tasks_frontend.md, test_case.md.
 
 3. Commit and push (branch `propose/<name>` already created by `/opsx:propose`):
    ```bash

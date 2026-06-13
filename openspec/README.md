@@ -22,7 +22,7 @@ make verify    # проверить ref веток
 | `/opsx:propose` | Артефакты change + ветка `propose/<change>` |
 | `/opsx:explore` | Исследование (без кода) |
 | `/opsx:spec-review` | Commit + push + PR спек |
-| `/opsx:apply` | Разработка по стеку `backend` \| `frontend` \| `design` |
+| `/opsx:apply` | Разработка по стеку `backend` \| `frontend` |
 | `/opsx:archive` | Архив change + merge delta specs |
 
 ```bash
