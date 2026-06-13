@@ -1,0 +1,13 @@
+workspace:
+  dir: ./workspace
+
+services:
+  - name: finAns-backend
+    repo: git@github.com:SimonLavlinskiy/finAns-backend.git
+    ref: main
+    type: branch
+
+  - name: finAns-frontend
+    repo: git@github.com:SimonLavlinskiy/finAns-frontend.git
+    ref: main
+    type: branch

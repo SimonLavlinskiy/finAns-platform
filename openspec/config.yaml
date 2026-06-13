@@ -1,0 +1,73 @@
+schema: spec-driven
+
+context: |
+  Язык: Русский. Все артефакты пишутся на русском языке.
+
+  Проект finAns — личная финансовая админка (Spec-Driven Development на базе OpenSpec).
+  Точка входа в архитектуру: decisions/0000-sdd-architecture-proposal.md.
+
+  ## Канонические имена репозиториев
+  - finAns-platform — этот репозиторий (спеки, ADR, conventions).
+  - finAns-backend — Go API: REST JSON + PostgreSQL.
+  - finAns-frontend — React SPA (админка пользователя).
+
+  ## Назначение
+  Веб-приложение для учёта личных финансов: доходов, расходов, планируемых трат
+  и обязательных платежей. Один пользователь, десктоп-first с базовой мобильной адаптацией.
+
+  ## Топология
+  ```
+  finAns-platform   ← спеки, ADR, OpenSpec workflow
+         ↓ .platform-link
+  finAns-backend    ← Go API (workspace/finAns-backend/)
+  finAns-frontend   ← React SPA (workspace/finAns-frontend/)
+  ```
+
+  GitHub:
+  - https://github.com/SimonLavlinskiy/finAns-platform
+  - https://github.com/SimonLavlinskiy/finAns-backend
+  - https://github.com/SimonLavlinskiy/finAns-frontend
+
+  ## Технологический стек
+
+  ### Backend (finAns-backend)
+  - Go, PostgreSQL, sqlc или pgx (без тяжёлых ORM)
+  - Clean Architecture: handler → service → repository
+  - REST JSON, golang-migrate, viper + .env, zap/slog
+  - golangci-lint (обязателен в CI), testify + mockery, testcontainers-go
+  - Swagger/swaggo; вложения в uploads/ или S3/MinIO
+
+  ### Frontend (finAns-frontend)
+  - React 18 + TypeScript, Vite
+  - shadcn/ui, Tailwind CSS
+  - TanStack Table v8, TanStack Query, React Router v6
+  - React Hook Form + Zod, Recharts (v2)
+
+  ## Модель данных (основные сущности)
+  - tags (id, parent_id, name, created_at)
+  - transactions (id, title, amount, date, tag_id, category, specificity, comment, url, file_*)
+  - spending_limits (id, tag_id, amount, period_type, period_start, period_end)
+  - mandatory_payments + mandatory_payment_statuses
+  - planned_expenses
+  - user_balance (id, initial_amount, updated_at)
+
+  ## Роадмап
+  - v1 MVP: теги, транзакции, баланс, обязательные платежи, планируемые расходы
+  - v2: графики, лимиты трат, уведомления
+  - v3 (опционально): экспорт CSV/Excel, мультивалютность, PWA, тёмная тема
+
+  ## Архитектурные стандарты
+  - Спеки — capabilities в `openspec/specs/`, сценарии GIVEN/WHEN/THEN
+  - Активные предложения — `openspec/changes/<change>/`
+  - Реализация — `workspace/<service>/` (клоны командных репозиториев)
+  - Связь командных репо с платформой — `.platform-link` (YAML-маркер)
+  - Фильтры таблиц сохраняются в URL; серверная фильтрация при >500 записей
+  - HTTPS обязателен при деплое; auth опционален в v1
+  - Покрытие тестами сервисного слоя backend — минимум 70%
+
+rules:
+  proposal:
+    - "Frontmatter обязателен: owner, reviewers, target_release, status, created (неизвестные = TBD)."
+  specs:
+    - "Каждое требование SHALL иметь ≥1 сценарий GIVEN/WHEN/THEN (4 хэштега '#### Scenario:')."
+    - "Помечай требования v2/v3 тегом в названии, если они вне текущего MVP."

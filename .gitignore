@@ -1,0 +1,18 @@
+node_modules/
+dist/
+build/
+.env
+.env.local
+
+# Workspace clones (командные репозитории)
+workspace/finAns-backend/
+workspace/finAns-frontend/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Logs
+*.log

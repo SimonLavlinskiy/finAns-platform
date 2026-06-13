@@ -1,0 +1,14 @@
+{
+  "name": "finans-platform",
+  "private": true,
+  "scripts": {
+    "opsx:new": "node scripts/opsx-new-change.mjs",
+    "openspec:schema-sync": "node scripts/sync-schema-skills.mjs",
+    "openspec:update": "openspec update --force && node scripts/sync-schema-skills.mjs",
+    "workspace:init": "make workspace-init",
+    "workspace:verify": "make workspace-verify"
+  },
+  "devDependencies": {
+    "@fission-ai/openspec": "^1.3.1"
+  }
+}
