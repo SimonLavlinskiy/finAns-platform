@@ -1,6 +1,6 @@
 # Schema: spec-driven
 
-OpenSpec-схема для монорепозитория finAn (Go backend + React frontend).
+OpenSpec-схема для finAns (finAns-platform + finAns-backend + finAns-frontend).
 
 ## Артефакты
 
@@ -8,17 +8,15 @@ OpenSpec-схема для монорепозитория finAn (Go backend + Re
 |----|------|
 | proposal | proposal.md |
 | specs | specs/**/*.md |
-| design | design.md |
+| design | design.md (технический дизайн, не UI-стек) |
 | tasks-backend | tasks_backend.md |
 | tasks-frontend | tasks_frontend.md |
-| tasks-design | tasks_design.md |
 | test-cases | test_case.md |
 
 ## Стеки apply
 
 - `backend` — Go, PostgreSQL, REST API, миграции
 - `frontend` — React, TypeScript, UI
-- `design` — макеты, компоненты, user flow
 
 ## Цепочка
 

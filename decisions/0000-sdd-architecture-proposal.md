@@ -63,7 +63,7 @@ Workflow: `/opsx:propose` → `/opsx:spec-review` → `/opsx:apply` → `/opsx:a
 - `openspec/specs/` — консолидированный источник правды
 - `decisions/` — архитектурные решения (MADR-lite)
 
-Схема: `spec-driven` (стеки apply: backend, frontend, design).
+Схема: `spec-driven` (стеки apply: backend, frontend).
 
 ## §05 · Единый AGENTS.md
 

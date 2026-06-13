@@ -24,7 +24,7 @@
 
 - `make init` — клонировать командные репо в `workspace/`
 - Новый change: `/opsx:propose <id>` → `/opsx:spec-review` → merge → `/opsx:apply <stack>` → `/opsx:archive`
-- Стеки apply: `backend`, `frontend`, `design`
+- Стеки apply: `backend`, `frontend`
 - Ветки: `propose/<change>` (спеки), `features/<change>` (код в workspace)
 
 ## Capabilities (канонические спеки)

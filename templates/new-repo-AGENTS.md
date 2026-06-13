@@ -17,7 +17,7 @@
 
 Когда работаешь над фичей со ссылкой на spec:
 1. Прочитай change в `<platform>/openspec/changes/<id>/`.
-2. Изучи `tasks_<stack>.md` для своего стека (backend / frontend / design).
+2. Изучи `tasks_<stack>.md` для своего стека (backend / frontend).
 3. Реализуй код в этом репозитории.
 4. По завершении — push, PR, в описании ссылка на change и capability.
 
