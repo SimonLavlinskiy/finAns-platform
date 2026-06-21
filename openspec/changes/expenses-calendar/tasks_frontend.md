@@ -37,13 +37,14 @@
 
 - [x] 5.1 Клик по столбцу дня (вне попапа) → `navigate('/transactions?date_from=YYYY-MM-DD&date_to=YYYY-MM-DD')`, используя существующий URL-sync фильтров
 
-## 6. Страница и роутинг
+## 6. Размещение в UI
 
 <!-- spec: expenses-calendar -->
 
-- [x] 6.1 `src/features/analytics/pages/AnalyticsPage.tsx` — сборка `ExpensesCalendar` + skeleton при `isLoading`
-- [x] 6.2 `src/app/router.tsx` — маршрут `/analytics` (под `RequireAuth`)
-- [x] 6.3 `AppLayout` — пункт меню «Аналитика» (`BarChart3` из `lucide-react`) между «Метки» и «План», desktop sidebar + mobile header
+- [x] 6.1 ~~`src/features/analytics/pages/AnalyticsPage.tsx`~~ — **изменено по запросу пользователя после деплоя**: отдельная страница удалена, `ExpensesCalendar` встроен блоком в `TransactionsPage.tsx` (над фильтрами, под заголовком/кнопкой «Добавить»)
+- [x] 6.2 ~~`src/app/router.tsx` — маршрут `/analytics`~~ — маршрут удалён вместе со страницей
+- [x] 6.3 ~~`AppLayout` — пункт меню «Аналитика»~~ — пункт меню и импорт `BarChart3` удалены (между «Метки» и «План» больше нет отдельного пункта)
+- [x] 6.4 Блок фильтров на `TransactionsPage` сделан компактнее: пилюли «Категория» и «Специфика» объединены в один ряд через разделитель, отступы карточки уменьшены (`p-5`→`p-4`, `space-y-4`→`space-y-2`)
 
 ## 7. Качество
 
