@@ -6,16 +6,18 @@
 
 | Файл | Раздел | Кол-во кейсов |
 |------|--------|--------------|
-| `01-auth.md` | Аутентификация | 6 |
+| `01-auth.md` | Аутентификация и сессия | 11 |
 | `02-transactions.md` | Транзакции | 12 |
 | `03-balance.md` | Баланс | 8 |
 | `04-tags.md` | Метки | 11 |
-| `05-mandatory-payments.md` | Регулярные платежи | 11 |
+| `05-mandatory-payments.md` | Регулярные платежи | 13 |
 | `06-import.md` | Импорт CSV | 10 |
 | `07-analytics.md` | Аналитика / Календарь | 8 |
-| `08-navigation.md` | Навигация и UX | 11 |
+| `08-navigation.md` | Навигация и UX | 12 |
+| `09-planned-expenses.md` | Хочу купить | 11 |
+| `10-projects.md` | Проекты и мультипользователь | 10 |
 
-**Итого:** 77 тест-кейсов
+**Итого:** 106 тест-кейсов
 
 ## Playwright Quickstart
 
@@ -41,10 +43,15 @@ async function globalSetup() {
   const browser = await chromium.launch();
   const page = await browser.newPage();
 
+  // 1. Логин
   await page.goto('/login');
-  await page.fill('[data-testid="login-input"]', process.env.ADMIN_LOGIN!);
-  await page.fill('[data-testid="password-input"]', process.env.ADMIN_PASSWORD!);
-  await page.click('[data-testid="login-submit"]');
+  await page.fill('[placeholder="Логин"]', process.env.SIMON_USERNAME ?? 'simon');
+  await page.fill('[placeholder="Пароль"]', process.env.SIMON_PASSWORD!);
+  await page.click('button:has-text("Войти")');
+
+  // 2. Выбор проекта
+  await page.waitForURL('**/projects');
+  await page.click('text=Мои финансы');
   await page.waitForURL('**/transactions');
 
   await page.context().storageState({ path: 'playwright/.auth/user.json' });
