@@ -64,6 +64,6 @@
 
 <!-- spec: planned-expenses -->
 
-- [ ] 8.1 Unit-тест `getEffectivePriority`/`sortItemsByPriority` (`src/lib/planned-expenses.test.ts`): дата ≤3 дня → high, дата в прошлом → не влияет, сортировка групп приоритета с сохранением порядка добавления
-- [ ] 8.2 Unit-тест `contrastText()` на наборе `CATEGORY_COLORS` — для каждого цвета проверить ожидаемый (тёмный/светлый) результат
-- [ ] 8.3 Компонентный тест `PlannedExpenseRow`: рендер без стоимости/даты не создаёт лишних DOM-узлов под эти поля; рендер с `url` оборачивает название в `<a>` с `target="_blank"`
+- [x] 8.1 Unit-тест `getEffectivePriority`/`sortItemsByPriority` (`tests/planned-expenses.test.ts`): дата ≤3 дня → high, дата в прошлом → не влияет, сортировка групп приоритета с сохранением порядка добавления
+- [x] 8.2 Unit-тест `contrastText()` на наборе `CATEGORY_COLORS` (`tests/category-palette.test.ts`) — для каждого цвета проверяет ожидаемый (тёмный/светлый) результат
+- [x] 8.3 Компонентный тест `PlannedExpenseRow` (`tests/PlannedExpenseRow.test.tsx`, happy-dom): рендер без стоимости/даты не создаёт лишних узлов; с `url` — название в `<a target="_blank">`
