@@ -5,8 +5,8 @@
 Пользователь SHALL задавать для расходной категории верхнего уровня один ежемесячный лимит. Он действует для всех
 месяцев, включая прошлые. Лимит задаётся и меняется через `PUT /api/v1/spending-limits/by-category/{categoryId}` с телом
 `{ amount }` в копейках (upsert, `period_type='month'`), а удаляется через `DELETE /api/v1/spending-limits/by-category/{categoryId}`.
-`amount ≤ 0` отклоняется с 400. Для категории с `kind=income` или удалённой категории backend возвращает 400 или 404.
-`GET /api/v1/spending-limits` возвращает `[{ id, categoryId, amount, ... }]`. Старые эндпоинты `POST /`, `PUT/DELETE /{id}`
+`amount ≤ 0` отклоняется с 422 (ошибка валидации). Для категории с `kind=income` или удалённой категории backend возвращает 400 или 404.
+`GET /api/v1/spending-limits` возвращает `[{ id, category_id, amount, ... }]`. Старые эндпоинты `POST /`, `PUT/DELETE /{id}`
 остаются для совместимости. Создание второго месячного лимита на ту же категорию заменяет существующий.
 
 #### Scenario: Лимит на месяц

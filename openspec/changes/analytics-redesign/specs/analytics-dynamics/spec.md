@@ -2,19 +2,19 @@
 
 ### Requirement: API сводки года
 Backend SHALL предоставлять `GET /api/v1/analytics/year?year=YYYY`, который возвращает `year` и `months[]`
-с полями `month` (`YYYY-MM`), `income`, `expense`, `isCurrent` для месяцев выбранного года, где есть операции,
+с полями `month` (`YYYY-MM`), `income`, `expense`, `is_current` для месяцев выбранного года, где есть операции,
 до текущего месяца включительно. Backend SHALL также предоставлять `GET /api/v1/analytics/range`, который
-возвращает `firstMonth` (первый месяц с операциями или `null`) и `currentMonth`.
+возвращает `first_month` (первый месяц с операциями или `null`) и `current_month`.
 
 #### Scenario: Текущий год
 - **GIVEN** сегодня 18.10.2026, операции есть с января по октябрь
 - **WHEN** клиент запрашивает `year=2026`
-- **THEN** в ответе 10 месяцев, и только у `2026-10` `isCurrent=true`
+- **THEN** в ответе 10 месяцев, и только у `2026-10` `is_current=true`
 
 #### Scenario: Диапазон без операций
 - **GIVEN** в проекте нет операций
 - **WHEN** клиент запрашивает `/analytics/range`
-- **THEN** `firstMonth=null`
+- **THEN** `first_month=null`
 
 ### Requirement: Выбор года
 Под заголовком «Динамика доходов и расходов» (без подзаголовка) SHALL быть одна капсула `‹ {год} ›` на фоне основного

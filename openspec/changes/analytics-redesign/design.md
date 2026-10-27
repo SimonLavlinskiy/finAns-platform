@@ -62,7 +62,7 @@ GROUP BY t.tag_id, t.category;
 включая удалённые теги. Подкатегория `null` — это операции, привязанные к самому корневому тегу.
 
 - `YearSummary`: `GROUP BY date_trunc('month', date), category` за год; месяцы без операций не возвращаются.
-- `Range`: `SELECT MIN(date) FROM transactions WHERE project_id=$1`. Отдаёт `firstMonth` и `currentMonth`.
+- `Range`: `SELECT MIN(date) FROM transactions WHERE project_id=$1`. Отдаёт `first_month` и `current_month`.
 - «Сегодня» берётся из `time.Now()` в TZ сервера, внедрённого через `Clock`-интерфейс, чтобы тесты фиксировали дату.
 
 Сравнение месяцев — это два вызова `month`, без отдельного `/compare`: данные уже в кэше от блока 1 и таблицы.
@@ -93,7 +93,7 @@ CREATE INDEX idx_transactions_project_date ON transactions(project_id, date);
   Регулярные платежи с удалённой категорией остаются, но в «Планировании» её строки нет (её «Минимум» не показывается).
 - Новые теги наследуют `kind` родителя. Корневым тегам `kind` задаётся при создании (по умолчанию `expense`).
   В настройках проекта появляется переключатель «Доходная категория».
-- Видимость в месяце M: `createdAt ≤ конец M && (deletedAt == null || deletedAt ≥ начало M)`. Правило реализуется
+- Видимость в месяце M: `created_at ≤ конец M && (deleted_at == null || deleted_at ≥ начало M)`. Правило реализуется
   одной функцией `isCategoryVisibleInMonth` на фронтенде. Сервер отдаёт суммы по всем тегам, а фильтрует клиент:
   так правило живёт в одном месте и одинаково работает для блоков 1, 2 и сравнения.
 
@@ -109,7 +109,7 @@ CREATE INDEX idx_transactions_project_date ON transactions(project_id, date);
   Перед ним миграция дедуплицирует существующие месячные лимиты и оставляет самый свежий по `created_at`.
 - `SpendingLimitService.UpsertForCategory` проверяет, что тег корневой, живой, принадлежит проекту и `kind=expense`,
   а затем выполняет `INSERT ... ON CONFLICT (project_id, tag_id) WHERE period_type='month' DO UPDATE SET amount=EXCLUDED.amount`.
-- В ответ `GET /spending-limits` добавляется `categoryId` (alias `tag_id`). Недельные и custom-лимиты в новом UI не показываются.
+- В ответ `GET /spending-limits` добавляется `category_id` (alias `tag_id`). Недельные и custom-лимиты в новом UI не показываются.
 
 ### 4. Планирование: одна строка JSONB на проект
 
@@ -127,7 +127,7 @@ CREATE TABLE planners (
   не больше 50 строк дохода) и делает `INSERT ... ON CONFLICT (project_id) DO UPDATE` по правилу «последний победил».
 - `days = null` означает «авто»: клиент подставляет число дней следующего месяца. Так значение по умолчанию
   само меняется с наступлением нового месяца, а ручное значение сохраняется.
-- Ключи `paymentOverrides` и `plans` — строковые id. Неизвестные (удалённые платежи и категории) клиент игнорирует,
+- Ключи `payment_overrides` и `plans` — строковые id. Неизвестные (удалённые платежи и категории) клиент игнорирует,
   а при следующем сохранении вычищает.
 - JSONB, а не нормализованные таблицы: это песочница без отчётности по полям, структура целиком читается и пишется
   одним запросом, а миграции схемы данных не нужны.
@@ -184,6 +184,20 @@ src/features/analytics/
   и не годится для «ярко-красного». Светлые подложки (зелёная, красная, жёлтая) строятся через существующие
   `--income`/`--expense` с альфой и `--bar-planned-bg`.
 
+### 8. Соглашения API (уточнено при реализации)
+
+- JSON-поля в snake_case, как во всём API проекта (`is_current`, `category_id`, `deleted_at`, `payment_overrides`).
+  Имена из ТЗ в camelCase ориентировочные.
+- Ошибки валидации возвращают 422 (`WriteValidationError`), некорректный JSON или параметр пути — 400,
+  отсутствующая, удалённая или чужая сущность — 404.
+- `GET /analytics/range` дополнительно отдаёт `today` (дата в `APP_TZ`) и `years` (годы с операциями), чтобы клиент
+  не считал «сегодня» по своим часам и мог пропускать годы без данных.
+- Новые эндпоинты живут в отдельных `AnalyticsOverviewService` и `AnalyticsOverviewHandler`, поэтому конструктор старого
+  `AnalyticsService` не меняется. Старые виджеты используют `TagRepository.ListWithDeleted`, чтобы не терять
+  названия удалённых категорий.
+- Интеграционные тесты change лежат в `internal/itest`: пакет `internal/repository` с тегом `integration` не компилируется
+  ещё до этого change. Для локального запуска при `credsStore: desktop` нужен `DOCKER_CONFIG` с пустым `config.json`.
+
 ## Risks / Trade-offs
 
 - [Мягкое удаление меняет семантику удаления тегов на других страницах] → селекторы и списки уже ходят через
@@ -197,7 +211,7 @@ src/features/analytics/
 - [Last-write-wins в «Планировании» может затереть чужие правки] → это принятое решение заказчика. Debounce
   и refetch при фокусе уменьшают окно конфликта.
 - [Часовой пояс «сегодня»] → сервер и клиент считают по `Europe/Moscow`. Конфиг `APP_TZ` задаётся на backend,
-  а клиент берёт `isCurrent` и `today` из ответа `month` и не считает их по своим часам.
+  а клиент берёт `is_current` и `today` из ответа `month` и не считает их по своим часам.
 - [Нагрузка] → индекс `transactions(project_id, date)`. Год — один запрос с `GROUP BY`.
 
 ## Migration Plan
